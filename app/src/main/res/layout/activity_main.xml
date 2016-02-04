@@ -22,73 +22,35 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:layout_weight="1"
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <fragment android:id="@+id/fragment"
+                  android:name="com.jayway.deejay.PlayerFragment"
+                  android:layout_width="match_parent"
+                  android:layout_height="70dp"
+                  tools:layout="@layout/fragment_player"/>
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"
-        android:visibility="gone"/>
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginBottom="80dp"
+        android:src="@mipmap/ic_grid_layout"
+        />
 
-    <RelativeLayout
-        android:layout_height="70dp"
-        android:layout_gravity="bottom|end"
-        android:layout_width="match_parent"
-        android:background="@android:color/black">
-
-        <ImageView
-            android:id="@+id/image"
-            android:src="@drawable/a"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"/>
-
-        <LinearLayout
-            android:layout_toRightOf="@id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp">
-            <TextView
-                android:text="Song title"
-                android:textColor="@android:color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:paddingBottom="2dp"/>
-            <TextView
-                android:text="Song description"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-        <ImageView
-            android:src="@android:drawable/ic_media_previous"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-
-        <ImageView
-            android:src="@android:drawable/ic_media_play"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-
-        <ImageView
-            android:src="@android:drawable/ic_media_next"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-        </LinearLayout>
-    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
