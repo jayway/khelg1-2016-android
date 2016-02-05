@@ -10,6 +10,8 @@ import android.transition.Explode;
 import android.transition.Slide;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,13 +41,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (switchFlag) {
                     final GridFragment gridFragment =new GridFragment();
-                    gridFragment.setEnterTransition(new Explode());
-                    gridFragment.setExitTransition(new Slide());
+//                    gridFragment.setEnterTransition(new Explode());
+//                    gridFragment.setExitTransition(new Slide());
                     gridFragment.setAllowReturnTransitionOverlap(false);
                     gridFragment.setAllowEnterTransitionOverlap(false);
                     getSupportFragmentManager()
                         .beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_enter_anim, R.anim.fragment_exit_anim, R.anim.fragment_enter_anim, R.anim.fragment_exit_anim)
                         .replace(R.id.fragment_container, gridFragment)
+
                         .commit();
                     fab.setImageResource(R.mipmap.ic_list_layout);
                 } else {
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     listFragment.setAllowEnterTransitionOverlap(false);
                     getSupportFragmentManager()
                         .beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_enter_anim, R.anim.fragment_exit_anim, R.anim.fragment_enter_anim, R.anim.fragment_exit_anim)
                         .replace(R.id.fragment_container, listFragment)
                         .commit();
                     fab.setImageResource(R.mipmap.ic_grid_layout);
@@ -97,6 +102,16 @@ public class MainActivity extends AppCompatActivity {
             albumViewHolder.getAlbumImage().setImageResource(album.getImageResource());
             albumViewHolder.getAlbumName().setText(album.getName());
             albumViewHolder.getAlbumDescription().setText(album.getDescription());
+
+            setAnimation(albumViewHolder, i);
+        }
+
+        private void setAnimation(AlbumViewHolder albumViewHolder, int i) {
+
+            // If the bound view wasn't previously displayed on screen, it's animated
+            Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.tile_appear_anim);
+            animation.setStartOffset(150 * i);
+            albumViewHolder.itemView.startAnimation(animation);
         }
 
         @Override
