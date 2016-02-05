@@ -5,5 +5,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
+        <item name="android:windowAllowReturnTransitionOverlap">false</item>
+        <item name="android:fragmentAllowEnterTransitionOverlap">@bool/false_bool</item>
+        <item name="android:fragmentAllowReturnTransitionOverlap">@bool/false_bool</item>
     </style>
 </resources>

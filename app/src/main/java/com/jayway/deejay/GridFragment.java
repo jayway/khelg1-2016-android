@@ -36,4 +36,5 @@ public class GridFragment extends Fragment {
             throw new RuntimeException("Fragment have to be attached to a MainActivity");
         }
     }
+
 }

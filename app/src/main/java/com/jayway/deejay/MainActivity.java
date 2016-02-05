@@ -6,6 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Slide;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,15 +38,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (switchFlag) {
+                    final GridFragment gridFragment =new GridFragment();
+                    gridFragment.setEnterTransition(new Explode());
+                    gridFragment.setExitTransition(new Slide());
+                    gridFragment.setAllowReturnTransitionOverlap(false);
+                    gridFragment.setAllowEnterTransitionOverlap(false);
                     getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new GridFragment())
+                        .replace(R.id.fragment_container, gridFragment)
                         .commit();
                     fab.setImageResource(R.mipmap.ic_list_layout);
                 } else {
+                    final ListFragment listFragment = new ListFragment();
+                    listFragment.setAllowReturnTransitionOverlap(false);
+                    listFragment.setAllowEnterTransitionOverlap(false);
                     getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new ListFragment())
+                        .replace(R.id.fragment_container, listFragment)
                         .commit();
                     fab.setImageResource(R.mipmap.ic_grid_layout);
                 }
