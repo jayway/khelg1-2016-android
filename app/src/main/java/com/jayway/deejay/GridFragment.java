@@ -19,13 +19,16 @@ public class GridFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
-
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
-
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(((MainActivity) getActivity()).getAlbumData(R.layout.grid_item));
-
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    
+            }
+        });
         return rootView;
     }
 
