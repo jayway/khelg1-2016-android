@@ -4,7 +4,7 @@
     android:layout_gravity="bottom|end"
     android:layout_height="70dp"
     android:layout_width="match_parent"
-    android:background="?attr/colorPrimary">
+    android:background="#5e6782">
 
     <ImageView
         android:id="@+id/image"

@@ -3,6 +3,8 @@ package com.jayway.deejay;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,9 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,16 +29,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // inside your activity (if you did not enable transitions in your theme)
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setIcon(R.mipmap.ic_jay);
 
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new ListFragment())
-                .commit();
+        updateFragment(new ListFragment(), false, false, null);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -44,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (showList) {
-                    updateFragment(new GridFragment(), false, null);
+                    updateFragment(new GridFragment(), false, true, "grid");
                     fab.setImageResource(R.mipmap.ic_list_layout);
                 } else {
-                    updateFragment(new ListFragment(), false, null);
+                    updateFragment(new ListFragment(), false, true, null);
                     fab.setImageResource(R.mipmap.ic_grid_layout);
                 }
 
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
             fab.setVisibility(View.VISIBLE);
         } else {
@@ -66,18 +69,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private void updateFragment(Fragment fragment, boolean open, String addToBackStack) {
+    private void updateFragment(Fragment fragment, boolean open, boolean flip, String addToBackStack) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         if (open) {
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        } else if (flip) {
+            ft.setCustomAnimations(
+                    R.animator.card_flip_right_in,
+                    R.animator.card_flip_right_out,
+                    R.animator.card_flip_left_in,
+                    R.animator.card_flip_left_out);
+
         }
+
+        ft.replace(R.id.fragment_container, fragment);
         if (!TextUtils.isEmpty(addToBackStack)) {
-            ft.replace(R.id.fragment_container, fragment);
             ft.addToBackStack(addToBackStack);
-        } else {
-            ft.replace(R.id.fragment_container, fragment);
         }
 
         ft.commit();
@@ -125,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("album", album);
                     dvf.setArguments(bundle);
-                    updateFragment(new DetailsViewFragment(), true, "details");
+                    updateFragment(new DetailsViewFragment(), true, false, "details");
                     fab.setVisibility(View.INVISIBLE);
                 }
             });
@@ -138,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class Album implements Serializable{
+    private class Album implements Serializable {
         private String mName;
         private String mDescription;
         private int mImageResource;
