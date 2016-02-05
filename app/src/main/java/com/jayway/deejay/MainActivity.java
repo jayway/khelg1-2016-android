@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean showDetails = false;
     private boolean showList = true;
 
     private FloatingActionButton fab;
@@ -30,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_jay);
 
         getSupportFragmentManager()
-            .beginTransaction()
-            .replace(R.id.fragment_container, new ListFragment())
-            .commit();
+                .beginTransaction()
+                .replace(R.id.fragment_container, new ListFragment())
+                .commit();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -41,15 +39,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (showList) {
                     getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new GridFragment())
-                        .commit();
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new GridFragment())
+                            .commit();
                     fab.setImageResource(R.mipmap.ic_list_layout);
                 } else {
                     getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new ListFragment())
-                        .commit();
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new ListFragment())
+                            .commit();
                     fab.setImageResource(R.mipmap.ic_grid_layout);
                 }
 
@@ -58,27 +56,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (showDetails) {
-            if (!showList) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new GridFragment())
-                        .commit();
-                fab.setImageResource(R.mipmap.ic_list_layout);
-            } else {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new ListFragment())
-                        .commit();
-                fab.setImageResource(R.mipmap.ic_grid_layout);
-            }
-            showDetails = !showDetails;
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     public AlbumAdapter getAlbumData(final int layoutResource) {
         return new AlbumAdapter(layoutResource);
@@ -116,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
             albumViewHolder.getView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDetails = !showDetails;
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new DetailsViewFragment())
+                            .addToBackStack("details")
                             .commit();
                 }
             });
@@ -166,7 +143,9 @@ public class MainActivity extends AppCompatActivity {
             return mAlbumName;
         }
 
-        public View getView() {return mView; }
+        public View getView() {
+            return mView;
+        }
 
         public TextView getAlbumDescription() {
             return mAlbumDescription;
