@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12px"
+    android:layout_marginBottom="12px"
+    android:orientation="horizontal">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/image"
-        tools:src="@drawable/f"
-        android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:adjustViewBounds="true"
-        android:contentDescription="@null"/>
+        android:layout_width="wrap_content"
+        android:src="@drawable/f"
+        android:scaleType="fitCenter"
+        app:riv_corner_radius="30dip"
+        app:riv_border_width="2dip"
+        app:riv_border_color="#333333"
+        app:riv_mutate_background="true"
+        app:riv_oval="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,16 +29,19 @@
         android:orientation="vertical">
 
         <TextView
-            tools:text="Album name"
             android:id="@+id/name"
+            style="@style/TextStyle"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:text="Album name" />
 
         <TextView
-            tools:text="Album description"
             android:id="@+id/description"
+            style="@style/TextStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:text="Album description" />
     </LinearLayout>
 
 </LinearLayout>

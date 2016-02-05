@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <ImageView
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:id="@+id/image"
-        tools:src="@drawable/f"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
-        android:contentDescription="@null"/>
+        android:contentDescription="@null"
+        tools:src="@drawable/f" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
         android:layout_below="@+id/image"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
-            tools:text="Album name"
             android:id="@+id/name"
+            style="@style/TextStyle"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:text="Album name" />
 
         <TextView
-            tools:text="Album description"
-            android:layout_below="@+id/name"
-            android:layout_alignLeft="@+id/name"
             android:id="@+id/description"
+            style="@style/TextStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/name"
+            android:layout_below="@+id/name"
+            tools:text="Album description" />
     </LinearLayout>
-
-
 
 
 </RelativeLayout>

@@ -3,11 +3,15 @@ package com.jayway.deejay;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // inside your activity (if you did not enable transitions in your theme)
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         if (open) {
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         } else if (flip) {
             ft.setCustomAnimations(
                     R.animator.card_flip_right_in,
@@ -104,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
 
         public AlbumAdapter(final int layoutResource) {
             mLayoutResource = layoutResource;
-            mAlbums.add(new Album("Album A", "Description for album", R.drawable.a));
-            mAlbums.add(new Album("Album B", "Description for album", R.drawable.b));
-            mAlbums.add(new Album("Album C", "Description for album", R.drawable.c));
-            mAlbums.add(new Album("Album D", "Description for album", R.drawable.d));
-            mAlbums.add(new Album("Album E", "Description for album", R.drawable.e));
+            mAlbums.add(new Album("Friday Feeling", "24 tracks", R.drawable.a));
+            mAlbums.add(new Album("Rainy Day", "41 tracks", R.drawable.b));
+            mAlbums.add(new Album("Party Mix", "108 tracks", R.drawable.c));
+            mAlbums.add(new Album("Road trip", "97 tracks", R.drawable.d));
+            mAlbums.add(new Album("Bubble bath", "66 tracks", R.drawable.e));
         }
 
         @Override
