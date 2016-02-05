@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private boolean showDetails = false;
+    private boolean showList = true;
+
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +34,12 @@ public class MainActivity extends AppCompatActivity {
             .replace(R.id.fragment_container, new ListFragment())
             .commit();
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-
-            private boolean switchFlag = true;
 
             @Override
             public void onClick(View view) {
-                if (switchFlag) {
+                if (showList) {
                     getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, new GridFragment())
@@ -49,9 +53,31 @@ public class MainActivity extends AppCompatActivity {
                     fab.setImageResource(R.mipmap.ic_grid_layout);
                 }
 
-                switchFlag = !switchFlag;
+                showList = !showList;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (showDetails) {
+            if (!showList) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new GridFragment())
+                        .commit();
+                fab.setImageResource(R.mipmap.ic_list_layout);
+            } else {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ListFragment())
+                        .commit();
+                fab.setImageResource(R.mipmap.ic_grid_layout);
+            }
+            showDetails = !showDetails;
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public AlbumAdapter getAlbumData(final int layoutResource) {
@@ -75,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public AlbumViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int i) {
             final View view = getLayoutInflater().inflate(mLayoutResource, viewGroup, false);
-
             return new AlbumViewHolder(view);
         }
 
@@ -87,6 +112,18 @@ public class MainActivity extends AppCompatActivity {
             albumViewHolder.getAlbumImage().setImageResource(album.getImageResource());
             albumViewHolder.getAlbumName().setText(album.getName());
             albumViewHolder.getAlbumDescription().setText(album.getDescription());
+
+            albumViewHolder.getView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDetails = !showDetails;
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new DetailsViewFragment())
+                            .commit();
+                }
+            });
+
         }
 
         @Override
@@ -123,10 +160,13 @@ public class MainActivity extends AppCompatActivity {
     private static class AlbumViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mAlbumName;
+        private final View mView;
 
         public TextView getAlbumName() {
             return mAlbumName;
         }
+
+        public View getView() {return mView; }
 
         public TextView getAlbumDescription() {
             return mAlbumDescription;
@@ -141,11 +181,12 @@ public class MainActivity extends AppCompatActivity {
 
         public AlbumViewHolder(@NonNull final View itemView) {
             super(itemView);
+
+            mView = itemView;
             mAlbumImage = (ImageView) itemView.findViewById(R.id.image);
             mAlbumName = (TextView) itemView.findViewById(R.id.name);
             mAlbumDescription = (TextView) itemView.findViewById(R.id.description);
         }
-
     }
 
 }
