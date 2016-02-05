@@ -1,8 +1,8 @@
 package com.jayway.deejay;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +22,7 @@ public class ListFragment extends Fragment {
 
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         recyclerView.setAdapter(((MainActivity) getActivity()).getAlbumData(R.layout.list_item));
 

@@ -1,8 +1,8 @@
 package com.jayway.deejay;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,9 +21,9 @@ public class GridFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_recycle_view, container, false);
         final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setAdapter(((MainActivity) getActivity()).getAlbumData(R.layout.grid_item));
-       
+
         return rootView;
     }
 

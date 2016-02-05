@@ -1,16 +1,22 @@
 package com.jayway.deejay;
 
+
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.mipmap.ic_jay);
 
-        getSupportFragmentManager()
+        getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new ListFragment())
                 .commit();
@@ -38,22 +44,44 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (showList) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new GridFragment())
-                            .commit();
+                    updateFragment(new GridFragment(), false, null);
                     fab.setImageResource(R.mipmap.ic_list_layout);
                 } else {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new ListFragment())
-                            .commit();
+                    updateFragment(new ListFragment(), false, null);
                     fab.setImageResource(R.mipmap.ic_grid_layout);
                 }
 
                 showList = !showList;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            getFragmentManager().popBackStack();
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    private void updateFragment(Fragment fragment, boolean open, String addToBackStack) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        if (open) {
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        }
+        if (!TextUtils.isEmpty(addToBackStack)) {
+            ft.replace(R.id.fragment_container, fragment);
+            ft.addToBackStack(addToBackStack);
+        } else {
+            ft.replace(R.id.fragment_container, fragment);
+        }
+
+        ft.commit();
+
     }
 
 
@@ -93,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
             albumViewHolder.getView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new DetailsViewFragment())
-                            .addToBackStack("details")
-                            .commit();
+                    DetailsViewFragment dvf = new DetailsViewFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("album", album);
+                    dvf.setArguments(bundle);
+                    updateFragment(new DetailsViewFragment(), true, "details");
+                    fab.setVisibility(View.INVISIBLE);
                 }
             });
-
         }
 
         @Override
@@ -110,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class Album {
+    private class Album implements Serializable{
         private String mName;
         private String mDescription;
         private int mImageResource;
