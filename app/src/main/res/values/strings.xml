@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">DeeJay</string>
     <string name="action_settings">Settings</string>
+
+
+
+
+    <string name="image_transition">transition_image</string>
+    <string name="name_transition">transition_name</string>
+    <string name="description_transition">transition_description</string>
+    <string name="fab_transition">transition_fab</string>
+    <string name="toolbar_transition">transition_toolbar</string>
 </resources>

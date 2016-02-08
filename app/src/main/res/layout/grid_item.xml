@@ -7,9 +7,10 @@
     >
 
     <ImageView
+        android:id="@+id/image"
+        android:transitionName="@string/image_transition"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:id="@+id/image"
         tools:src="@drawable/f"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +27,8 @@
         <TextView
             tools:text="Album name"
             android:id="@+id/name"
+            android:transitionName="@string/name_transition"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -34,6 +37,7 @@
             android:layout_below="@+id/name"
             android:layout_alignLeft="@+id/name"
             android:id="@+id/description"
+            android:transitionName="@string/description_transition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

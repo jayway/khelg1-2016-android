@@ -3,11 +3,13 @@ package com.jayway.deejay;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.transition.Slide;
+import android.transition.Fade;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -27,20 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
             .beginTransaction()
-            .replace(R.id.fragment_container, new ListFragment())
+            .replace(R.id.fragment_container, new GridFragment())
             .commit();
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
 
-            private boolean switchFlag = true;
+            private boolean switchFlag = false;
 
             @Override
             public void onClick(View view) {
                 if (switchFlag) {
                     final GridFragment gridFragment =new GridFragment();
-                    gridFragment.setEnterTransition(new Explode());
-                    gridFragment.setExitTransition(new Slide());
+                    gridFragment.setEnterTransition(new Fade());
+                    gridFragment.setExitTransition(new Fade());
                     gridFragment.setAllowReturnTransitionOverlap(false);
                     gridFragment.setAllowEnterTransitionOverlap(false);
                     getSupportFragmentManager()
@@ -62,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 switchFlag = !switchFlag;
             }
         });
+
+
     }
+
 
     public AlbumAdapter getAlbumData(final int layoutResource) {
         return new AlbumAdapter(layoutResource);
@@ -75,18 +80,45 @@ public class MainActivity extends AppCompatActivity {
 
         public AlbumAdapter(final int layoutResource) {
             mLayoutResource = layoutResource;
-            mAlbums.add(new Album("Album A", "Description for album", R.drawable.a));
-            mAlbums.add(new Album("Album B", "Description for album", R.drawable.b));
-            mAlbums.add(new Album("Album C", "Description for album", R.drawable.c));
-            mAlbums.add(new Album("Album D", "Description for album", R.drawable.d));
-            mAlbums.add(new Album("Album E", "Description for album", R.drawable.e));
+            mAlbums.add(new Album("Album A", "Description for album A", R.drawable.a));
+            mAlbums.add(new Album("Album B", "Description for album B", R.drawable.b));
+            mAlbums.add(new Album("Album C", "Description for album C", R.drawable.c));
+            mAlbums.add(new Album("Album D", "Description for album D", R.drawable.d));
+            mAlbums.add(new Album("Album E", "Description for album E", R.drawable.e));
+            mAlbums.add(new Album("Album A", "Description for album A", R.drawable.a));
+            mAlbums.add(new Album("Album B", "Description for album B", R.drawable.b));
+            mAlbums.add(new Album("Album C", "Description for album C", R.drawable.c));
+            mAlbums.add(new Album("Album D", "Description for album D", R.drawable.d));
+            mAlbums.add(new Album("Album E", "Description for album E", R.drawable.e));
         }
+
 
         @Override
         public AlbumViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int i) {
             final View view = getLayoutInflater().inflate(mLayoutResource, viewGroup, false);
+            final AlbumViewHolder viewHolder = new AlbumViewHolder(view);
 
-            return new AlbumViewHolder(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    Pair<View, String> image = new Pair<View, String>(viewHolder.getAlbumImage(), getString(R.string.image_transition));
+                    Pair<View, String> name = new Pair<View, String>(viewHolder.getAlbumName(), getString(R.string.name_transition));
+                    Pair<View, String> description = new Pair<View, String>(viewHolder.getAlbumDescription(), getString(R.string.description_transition));
+                    Pair<View, String> fab = new Pair<View, String>(findViewById(R.id.fab), getString(R.string.fab_transition));
+                    Pair<View, String> toolbar = new Pair<View, String>(findViewById(R.id.toolbar), getString(R.string.toolbar_transition));
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            MainActivity.this, image, name, description, fab, toolbar);
+
+                    Album album = mAlbums.get(viewHolder.getAdapterPosition());
+                    ActivityCompat.startActivity(MainActivity.this,
+                            AlbumActivity.getStartIntent(MainActivity.this, album.getImageResource(), album.getName(), album.getDescription()),
+                            options.toBundle());
+                }
+            });
+
+            return viewHolder;
         }
 
         @Override
@@ -97,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
             albumViewHolder.getAlbumImage().setImageResource(album.getImageResource());
             albumViewHolder.getAlbumName().setText(album.getName());
             albumViewHolder.getAlbumDescription().setText(album.getDescription());
+
+
         }
 
         @Override
